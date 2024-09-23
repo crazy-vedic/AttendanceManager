@@ -11,7 +11,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping","-u","root","-ppassword"]
       interval: 10s
-      retries: 5
+      retries: 10
       start_period: 20s
       timeout: 5s
 

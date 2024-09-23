@@ -17,4 +17,4 @@ COPY initiate.py /app/initiate.py
 EXPOSE 5000
 
 # Run initiate.py script to setup database
-CMD ["bash", "-c", "python /initiate.py && python /backend.py"]
+CMD ["bash", "-c", "python ./initiate.py && python ./backend.py"]
