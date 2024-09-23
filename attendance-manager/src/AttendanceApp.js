@@ -9,7 +9,7 @@ const AttendanceApp = () => {
   const [error, setError] = useState('');
   const [attendanceData, setAttendanceData] = useState([]);
 
-  const handleCheckAttendance = async () => {
+  const handleCheckAttendance = async (silent=false) => {
     try {
       let response; // Declare response outside of the if-else block
   
@@ -20,17 +20,17 @@ const AttendanceApp = () => {
         response = await axios.get(`http://${ip}/check-attendance`, { params: { id } });
       }
   
-      console.log('Response:', response.data);
+      //console.log('Response:', response.data);
   
       if (Array.isArray(response.data)) {
         setAttendanceData(response.data);
       } else {
         setAttendanceData([response.data]); // Handle the case when the response is not an array
       }
-  
+      if (!silent){
       setMessage(response.data.message || ''); // Set message or clear
-      setError(''); // Clear previous error
-    } catch (err) {
+      setError(''); // Clear previous error}
+    }} catch (err) {
       console.log('Error:', err);
       setMessage(''); // Clear message on error
       setError(err.response ? err.response.data.message : 'Error connecting to server');
@@ -41,7 +41,7 @@ const AttendanceApp = () => {
       const response = await axios.post(`http://${ip}/mark-attendance`, { id });
       setMessage(response.data.message || ''); // Set message or clear
       setError(''); // Clear previous error
-      handleCheckAttendance(); // Fetch updated attendance data
+      handleCheckAttendance(true); // Fetch updated attendance data
     } catch (err) {
       // console.log('Full Error:', err); // Log the full error object for debugging
   
@@ -65,7 +65,7 @@ const AttendanceApp = () => {
     const fetchAttendance = async () => {
     try {
       const response = await axios.get(`http://${ip}/check-attendance`,{params: { id: '*' }});
-      console.log(response.data);
+      //console.log(response.data);
       setAttendanceData(response.data);
       setError('');  // Clear any previous error
     } catch (err) {
@@ -101,8 +101,7 @@ const AttendanceApp = () => {
       <button onClick={handleMarkAttendance}>Mark Attendance</button>
       {message &&<p>Message: {message}</p>}
       {error&&<p className="error">Error: {error}</p>}
-            {/* Display table only if data exists */}
-            {attendanceData.length > 0 ? (
+      {attendanceData.length > 0 ? (
         <table>
           <thead>
             <tr>
