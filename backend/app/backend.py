@@ -39,6 +39,21 @@ def check_attendance():
         logging.error(f"Error fetching attendance: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/reset-attendance/', methods=['POST'])
+@cross_origin()
+def reset_attendance():
+    """
+    Reset attendance for all students.
+    """
+    try:
+        with retrieve_connection() as connection:
+            reset_query = "UPDATE Students SET attendance = 0;"
+            execute_query(connection, reset_query)
+            return jsonify({"message": "Attendance reset successfully"}), 200
+    except Exception as e:
+        logging.error(f"Failed to reset attendance: {e}")
+        return jsonify({"error": str(e)}), 500
+
 # Mark Attendance for a student
 @app.route('/mark-attendance', methods=['POST'])
 @cross_origin()
@@ -52,8 +67,12 @@ def mark_attendance():
     if not student_id:
         return jsonify({"error": "Missing id"}), 400
 
-    ip_address = request.remote_addr  # Get IP address of the client
-
+    ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+    logging.warning(request.headers.get('X-Forwarded-For', -1))
+    if ip_address:
+        # If there are multiple IPs in X-Forwarded-For, take the first one (the original client)
+        ip_address = ip_address.split(',')[0].strip()
+    logging.warning(F"Request from {ip_address}")
     try:
         with retrieve_connection() as connection:
             # Check if the IP has already marked attendance

@@ -1,5 +1,6 @@
 import React, { useState ,useEffect} from 'react';
 import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 import './AttendanceApp.css'
 
 const AttendanceApp = () => {
@@ -84,7 +85,7 @@ const AttendanceApp = () => {
 
   return (
     <div className="container">
-      <h2>Attendance System</h2>
+      <NavLink to={"/attendance"}><h2>Attendance System</h2></NavLink>
       <div className="form-group">
         <label>
           Server IP:

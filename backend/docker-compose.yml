@@ -17,28 +17,19 @@ services:
 
   flask-app:
     build: ./app
-    ports:
-      - "5000:5000"
+    #ports:
+    #  - "5000:5000"
     volumes:
       - ./app:/app
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      - MYSQL_HOST=mysql
+      - MYSQL_HOST=host.docker.internal
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=attendance_db
-    develop:
-      watch:
-        - action: sync
-          path: ./app
-          target: /app
-          ignore:
-            - __pycache__/
-        - action: rebuild
-          path: requirements.txt
-
+    network_mode: host
 
 volumes:
   mysql_data:

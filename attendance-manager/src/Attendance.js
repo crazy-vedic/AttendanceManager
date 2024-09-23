@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 
 const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
@@ -25,20 +26,20 @@ const Attendance = () => {
 
   return (
     <div>
-      <h2>Attendance Information</h2>
+      <NavLink to={"/"}><h2>Attendance Information</h2></NavLink>
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {attendanceData.length > 0 ? (
         <table border="1">
           <thead>
             <tr>
-              <th>ID</th>
+              {/* <th>ID</th> */}
               <th>Attendance</th>
             </tr>
           </thead>
           <tbody>
             {attendanceData.map((student, index) => (
               <tr key={index}>
-                <td>{student.student_id}</td>
+                {/* <td>{student.student_id}</td> */}
                 <td>{student.attendance}</td>
               </tr>
             ))}
