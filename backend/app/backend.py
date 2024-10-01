@@ -68,7 +68,6 @@ def mark_attendance():
         return jsonify({"error": "Missing id"}), 400
 
     ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-    logging.warning(request.headers.get('X-Forwarded-For', -1))
     if ip_address:
         # If there are multiple IPs in X-Forwarded-For, take the first one (the original client)
         ip_address = ip_address.split(',')[0].strip()

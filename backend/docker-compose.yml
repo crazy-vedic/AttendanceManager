@@ -1,3 +1,4 @@
+version: '3'
 services:
   mysql:
     image: mysql:5.7
@@ -17,20 +18,18 @@ services:
 
   flask-app:
     build: ./app
-    #ports:
-    #  - "5000:5000"
+    ports:
+      - "5000:5000"
     volumes:
       - ./app:/app
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     environment:
       - MYSQL_HOST=host.docker.internal
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=attendance_db
     network_mode: host
-
 volumes:
   mysql_data:
     driver: local
